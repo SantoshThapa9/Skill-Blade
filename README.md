@@ -1,3 +1,63 @@
+# Skill Blade
+
+Skill Blade is a full-stack e-learning app built with Next.js App Router,
+TypeScript, Sass Modules, MongoDB Atlas through Mongoose, cookie JWT auth,
+course enrollment, progress tracking, quizzes, and PDF certificates.
+
+## Setup
+
+Create `.env.local` from `.env.local.example`:
+
+```bash
+MONGODB_URI=mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/skill_blade?retryWrites=true&w=majority
+MONGODB_DB=skill_blade
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=replace-with-a-long-random-secret
+JWT_SECRET=replace-with-a-long-random-secret
+ADMIN_INVITE_CODE=change-this-admin-code
+```
+
+## Main Routes
+
+- `/signup` and `/login` for auth
+- `/courses` to browse and enroll
+- `/courses/[courseId]/learn` for video lessons, quizzes, progress, certificates
+- `/dashboard` for learners
+- `/admin` for course, quiz, enrollment, and certificate oversight
+
+## API Routes
+
+- `/api/auth/signup`, `/api/auth/[...nextauth]`
+- `/api/courses`, `/api/courses/[courseId]`
+- `/api/enroll`
+- `/api/quiz`
+- `/api/progress`
+- `/api/certificate`
+- `/api/seed` can refresh the demo courses and quizzes, though the catalog also auto-seeds them
+
+## Demo Data
+
+Demo courses are inserted automatically when the course catalog or admin
+dashboard loads. You can also trigger the idempotent seed endpoint manually:
+
+```bash
+curl http://localhost:3000/api/seed
+```
+
+The seed endpoint is idempotent and checks by course title before inserting.
+
+## Admin Accounts
+
+Choose `Admin` on signup and enter `ADMIN_INVITE_CODE`. If the code does not
+match, the account is created as a normal user.
+
+## Data Models
+
+Mongoose models live in `src/models`: `User`, `Course`, `Quiz`, `Progress`,
+and `Certificate`.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

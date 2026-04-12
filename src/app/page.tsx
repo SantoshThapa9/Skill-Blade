@@ -1,66 +1,41 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+import { Header } from "@/components/Header";
+import styles from "@/styles/App.module.scss";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
+    <main className={styles.pageShell}>
+      <Header />
+      <section className={styles.hero}>
+        <div className={styles.heroCopy}>
+          <p className={styles.kicker}>Skill Blade Academy</p>
+          <h1>Sharper courses for sharper careers.</h1>
           <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+            Learn with focused lessons, quizzes that prove progress, and
+            certificates you can download the moment you finish.
           </p>
+          <div className={styles.heroActions}>
+            <Link className={styles.primaryButton} href="/courses">
+              Browse courses
+            </Link>
+            <Link href="/signup">Create account</Link>
+          </div>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+      <section className={styles.featureBand}>
+        <article>
+          <h2>Watch</h2>
+          <p>Stream course lessons from stored URLs or Cloudinary links.</p>
+        </article>
+        <article>
+          <h2>Practice</h2>
+          <p>Take MCQ quizzes and keep the best score per course.</p>
+        </article>
+        <article>
+          <h2>Certify</h2>
+          <p>Complete every lesson, pass the quiz, and download a PDF.</p>
+        </article>
+      </section>
+    </main>
   );
 }
