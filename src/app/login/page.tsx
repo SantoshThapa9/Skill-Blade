@@ -10,9 +10,9 @@ export default function LoginPage() {
       <section className={styles.authPage}>
         <div>
           <p className={styles.kicker}>Welcome back</p>
-          <h1>Login to keep learning.</h1>
+          <h1>Login to your account</h1>
           <p>
-            New here? <Link href="/signup">Create an account</Link>
+            New here? <Link href="/signup">Create account</Link>
           </p>
         </div>
         <AuthForm mode="login" />

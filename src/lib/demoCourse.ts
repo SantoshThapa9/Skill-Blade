@@ -4,8 +4,7 @@ export const demoCourses = [
     title: "Frontend Development with React",
     description:
       "Basics to advanced React: components, hooks, state, and routing.",
-    thumbnail:
-      "https://images.unsplash.com/photo-1633356122544-f134324a6cee",
+    thumbnail: "https://images.unsplash.com/photo-1633356122544-f134324a6cee",
     lessons: [
       {
         _id: "64f100000000000000000001",
@@ -50,17 +49,32 @@ export const demoCourses = [
       },
       {
         prompt: "Props are used to pass what into a component?",
-        options: ["Data", "Compiled files", "Mongo indexes", "HTTP headers only"],
+        options: [
+          "Data",
+          "Compiled files",
+          "Mongo indexes",
+          "HTTP headers only",
+        ],
         answerIndex: 0,
       },
       {
         prompt: "React Router helps with which concern?",
-        options: ["Client-side routing", "Password hashing", "PDF export", "DNS"],
+        options: [
+          "Client-side routing",
+          "Password hashing",
+          "PDF export",
+          "DNS",
+        ],
         answerIndex: 0,
       },
       {
         prompt: "What should React state updates trigger?",
-        options: ["A UI re-render", "A file deletion", "A schema migration", "A DNS lookup"],
+        options: [
+          "A UI re-render",
+          "A file deletion",
+          "A schema migration",
+          "A DNS lookup",
+        ],
         answerIndex: 0,
       },
     ],
@@ -70,8 +84,7 @@ export const demoCourses = [
     title: "Full Stack Development with Next.js",
     description:
       "Build full-stack apps using Next.js, API routes, and MongoDB.",
-    thumbnail:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+    thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
     lessons: [
       {
         _id: "64f200000000000000000001",
@@ -106,12 +119,22 @@ export const demoCourses = [
       },
       {
         prompt: "Route handlers are useful for building what?",
-        options: ["API endpoints", "Image alt text", "CSS variables", "Git commits"],
+        options: [
+          "API endpoints",
+          "Image alt text",
+          "CSS variables",
+          "Git commits",
+        ],
         answerIndex: 0,
       },
       {
         prompt: "What does MongoDB commonly store?",
-        options: ["Documents", "Only PNG files", "CSS selectors", "Browser tabs"],
+        options: [
+          "Documents",
+          "Only PNG files",
+          "CSS selectors",
+          "Browser tabs",
+        ],
         answerIndex: 0,
       },
       {
@@ -126,7 +149,12 @@ export const demoCourses = [
       },
       {
         prompt: "Next.js can combine frontend pages with what?",
-        options: ["Server-side APIs", "Only static images", "Only Sass", "Only tests"],
+        options: [
+          "Server-side APIs",
+          "Only static images",
+          "Only Sass",
+          "Only tests",
+        ],
         answerIndex: 0,
       },
     ],
@@ -140,6 +168,13 @@ export function getDemoCourses() {
     description: demoCourse.description,
     thumbnail: demoCourse.thumbnail,
     lessons: demoCourse.lessons,
+    quiz: {
+      questions: demoCourse.quiz.map((question) => ({
+        prompt: question.prompt,
+        options: question.options,
+        answerIndex: question.answerIndex,
+      })),
+    },
   }));
 }
 

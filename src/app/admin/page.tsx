@@ -1,4 +1,4 @@
-import { AdminClient } from "@/components/AdminClient";
+import { AdminPanel } from "@/components/AdminPanel";
 import { Header } from "@/components/Header";
 import styles from "@/styles/App.module.scss";
 
@@ -7,7 +7,7 @@ export default function AdminPage() {
     <main className={styles.pageShell}>
       <Header />
       <section className={styles.contentSection}>
-        <AdminClient />
+        <AdminPanel />
       </section>
     </main>
   );

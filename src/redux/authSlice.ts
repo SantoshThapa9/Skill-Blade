@@ -1,21 +1,15 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-type AuthState = {
-  user: {
-    name: string;
-    role: "user" | "admin";
-  } | null;
-};
-
-const initialState: AuthState = {
-  user: null,
-};
+type User = {
+  name: string;
+  role: "user" | "admin";
+} | null;
 
 const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: { user: null as User },
   reducers: {
-    setAuthUser(state, action: PayloadAction<AuthState["user"]>) {
+    setAuthUser(state, action: PayloadAction<User>) {
       state.user = action.payload;
     },
     clearAuthUser(state) {

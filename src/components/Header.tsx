@@ -1,12 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { clearAuthUser } from "@/redux/authSlice";
 import styles from "@/styles/App.module.scss";
 
 export function Header() {
-  const { data: session } = useSession();
-  const user = session?.user;
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+
+  function logout() {
+    document.cookie = "skillToken=; Path=/; Max-Age=0";
+    document.cookie = "skillUser=; Path=/; Max-Age=0";
+    dispatch(clearAuthUser());
+    router.push("/login");
+  }
 
   return (
     <header className={styles.header}>
@@ -17,9 +27,9 @@ export function Header() {
         <Link href="/courses">Courses</Link>
         {user ? (
           <>
-            <Link href="/dashboard">Dashboard</Link>
             {user.role === "admin" ? <Link href="/admin">Admin</Link> : null}
-            <button onClick={() => signOut({ callbackUrl: "/login" })}>
+            <span className={styles.greeting}>Hello, {user.name}</span>
+            <button type="button" onClick={logout}>
               Logout
             </button>
           </>

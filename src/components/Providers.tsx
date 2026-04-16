@@ -1,54 +1,45 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SessionProvider, useSession } from "next-auth/react";
-import { ReactNode, useEffect, useState } from "react";
-import { Provider as ReduxProvider } from "react-redux";
-import { setAuthUser, clearAuthUser } from "@/store/authSlice";
-import { store } from "@/store/store";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { ReactNode, useEffect } from "react";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
+import { setAuthUser, clearAuthUser } from "@/redux/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
-function AuthStateBridge() {
-  const { data: session } = useSession();
+function AuthLoader() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (session?.user) {
-      dispatch(
-        setAuthUser({
-          name: session.user.name ?? "",
-          role: session.user.role,
-        }),
-      );
-    } else {
-      dispatch(clearAuthUser());
+    const cookies = document.cookie
+      .split(";")
+      .reduce<Record<string, string>>((acc, cookie) => {
+        const [name, ...rest] = cookie.trim().split("=");
+        acc[name] = decodeURIComponent(rest.join("="));
+        return acc;
+      }, {});
+
+    const userCookie = cookies.skillUser;
+    if (userCookie) {
+      try {
+        const user = JSON.parse(userCookie);
+        dispatch(setAuthUser(user));
+        return;
+      } catch {
+        // ignore invalid cookie
+      }
     }
-  }, [dispatch, session]);
+
+    dispatch(clearAuthUser());
+  }, [dispatch]);
 
   return null;
 }
 
 export function Providers({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 60_000,
-            retry: 1,
-          },
-        },
-      }),
-  );
-
   return (
-    <SessionProvider>
-      <ReduxProvider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <AuthStateBridge />
-          {children}
-        </QueryClientProvider>
-      </ReduxProvider>
-    </SessionProvider>
+    <Provider store={store}>
+      <AuthLoader />
+      {children}
+    </Provider>
   );
 }

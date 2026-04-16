@@ -8,35 +8,26 @@ export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
-  const name = String(body?.name ?? "").trim();
   const email = String(body?.email ?? "")
     .trim()
     .toLowerCase();
   const password = String(body?.password ?? "");
-  const role = String(body?.role ?? "user") as "user" | "admin";
 
-  if (!name || !email || password.length < 6) {
+  if (!email || !password) {
     return NextResponse.json(
-      { error: "Name, email, and password are required." },
+      { error: "Email and password are required." },
       { status: 400 },
     );
   }
 
   await connectToDatabase();
-  const existing = await User.findOne({ email });
-  if (existing) {
+  const user = await User.findOne({ email }).select("+password");
+  if (!user || !(await bcrypt.compare(password, user.password))) {
     return NextResponse.json(
-      { error: "Email already exists." },
-      { status: 409 },
+      { error: "Invalid email or password." },
+      { status: 401 },
     );
   }
-
-  const user = await User.create({
-    name,
-    email,
-    password: await bcrypt.hash(password, 10),
-    role,
-  });
 
   const sessionUser = {
     id: user._id.toString(),

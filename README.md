@@ -1,97 +1,101 @@
-# Skill Blade
+# Skill Blade ⚔️
 
-Skill Blade is a full-stack e-learning app built with Next.js App Router,
-TypeScript, Sass Modules, MongoDB Atlas through Mongoose, cookie JWT auth,
-course enrollment, progress tracking, quizzes, and PDF certificates.
-
-## Setup
-
-Create `.env.local` from `.env.local.example`:
-
-```bash
-MONGODB_URI=mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/skill_blade?retryWrites=true&w=majority
-MONGODB_DB=skill_blade
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=replace-with-a-long-random-secret
-JWT_SECRET=replace-with-a-long-random-secret
-ADMIN_INVITE_CODE=change-this-admin-code
-```
-
-## Main Routes
-
-- `/signup` and `/login` for auth
-- `/courses` to browse and enroll
-- `/courses/[courseId]/learn` for video lessons, quizzes, progress, certificates
-- `/dashboard` for learners
-- `/admin` for course, quiz, enrollment, and certificate oversight
-
-## API Routes
-
-- `/api/auth/signup`, `/api/auth/[...nextauth]`
-- `/api/courses`, `/api/courses/[courseId]`
-- `/api/enroll`
-- `/api/quiz`
-- `/api/progress`
-- `/api/certificate`
-- `/api/seed` can refresh the demo courses and quizzes, though the catalog also auto-seeds them
-
-## Demo Data
-
-Demo courses are inserted automatically when the course catalog or admin
-dashboard loads. You can also trigger the idempotent seed endpoint manually:
-
-```bash
-curl http://localhost:3000/api/seed
-```
-
-The seed endpoint is idempotent and checks by course title before inserting.
-
-## Admin Accounts
-
-Choose `Admin` on signup and enter `ADMIN_INVITE_CODE`. If the code does not
-match, the account is created as a normal user.
-
-## Data Models
-
-Mongoose models live in `src/models`: `User`, `Course`, `Quiz`, `Progress`,
-and `Certificate`.
+A modern e-learning platform built as a college group project. Skill Blade aims to provide structured, accessible, and skill-focused learning through a clean and scalable web experience.
 
 ---
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 🚧 Project Status
 
-## Getting Started
+This project is currently **in active development**. Core features are being implemented and refined.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🧩 Tech Stack
+
+- **Frontend:** Next.js, TypeScript
+- **Styling:** Sass (SCSS)
+- **Backend / Database:** MongoDB
+- **Architecture:** Full-stack web app (modular & scalable)
+
+---
+
+## 🎯 Features (Planned / In Progress)
+
+- User authentication (login/signup)
+- Course browsing and enrollment
+- Video-based learning modules
+- Progress tracking
+- Instructor dashboard (basic)
+- Responsive UI
+
+---
+
+## 📁 Project Structure (Simplified)
+
+```
+/app        → Next.js app routes & pages
+/components → Reusable UI components
+/styles     → SCSS files
+/lib        → Utility & helper functions
+/models     → Database models (MongoDB)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Setup & Run
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Clone the repository
 
-## Learn More
+```
+git clone <repo-url>
+cd skill-blade
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Install dependencies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Run development server
 
-## Deploy on Vercel
+```
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Open in browser
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-"# Skill-Blade" 
+```
+http://localhost:3000
+```
+
+---
+
+## 🧪 Environment Variables
+
+Create a `.env.local` file:
+
+```
+MONGODB_URI=your_mongodb_connection
+
+```
+
+---
+
+## 🤝 Contribution
+
+This is a collaborative college project. Contributions are managed within the team. Code structure and standards are evolving.
+
+---
+
+## 📌 Notes
+
+- Features and structure may change frequently
+- Not production-ready
+- Focused on learning and experimentation
+
+---
+
+## 📄 License
+
+For academic use only.
