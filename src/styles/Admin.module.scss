@@ -1,0 +1,240 @@
+.pageShell {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  padding: clamp(1rem, 2vw, 2rem);
+  display: flex;
+  justify-content: center;
+
+  .contentSection {
+    width: 100%;
+    max-width: 960px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: clamp(1.25rem, 2vw, 2rem);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    }
+
+    h3 {
+      font-size: clamp(1rem, 1.4vw, 1.25rem);
+      font-weight: 600;
+      color: var(--white);
+      margin-top: clamp(0.5rem, 1vw, 1rem);
+    }
+  }
+
+  /* Inputs */
+
+  input,
+  textarea {
+    width: 100%;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    padding: clamp(0.55rem, 1vw, 0.75rem);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    color: var(--text);
+    outline: none;
+    transition: 0.2s ease;
+
+    &::placeholder {
+      color: var(--muted);
+    }
+
+    &:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-soft);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  /* Lesson + Quiz blocks */
+
+  form > div {
+    background: var(--surface-soft);
+    padding: clamp(0.75rem, 1.5vw, 1rem);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+  }
+
+  /* Option rows */
+
+  form > div > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    input[type="radio"] {
+      accent-color: var(--primary);
+      transform: scale(1.1);
+    }
+  }
+
+  /* Buttons */
+
+  button {
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 0.6rem;
+    padding: clamp(0.55rem, 1vw, 0.7rem);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  /* Secondary buttons (Remove / Add) */
+
+  button[type="button"] {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+
+    &:hover {
+      color: var(--white);
+      border-color: var(--primary);
+    }
+  }
+
+  /* Danger button override */
+
+  button:has(+ input[type="radio"]) {
+    background: var(--danger-soft);
+    color: var(--danger);
+  }
+
+  /* Message */
+
+  p {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .adminTabs {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: clamp(1rem, 1.5vw, 1.25rem);
+    flex-wrap: wrap;
+  }
+
+  .adminTabs button {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .activeTab {
+    background: var(--secondary);
+    color: var(--surface);
+  }
+
+  .adminForm,
+  .manageSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .lessonRow,
+  .quizRow,
+  .quizOption,
+  .formActions,
+  .manageCard,
+  .manageActions {
+    width: 100%;
+  }
+
+  .lessonRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 120px auto;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .quizRow {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .quizOption {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .formActions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .manageCard {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.85rem;
+    background: var(--surface-soft);
+  }
+
+  .manageActions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .meta {
+    color: var(--muted);
+    margin-top: 0.35rem;
+  }
+
+  .locked {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  /* Responsive */
+
+  @media (max-width: 640px) {
+    .contentSection {
+      padding: 1rem;
+    }
+
+    form > div {
+      padding: 0.75rem;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+}

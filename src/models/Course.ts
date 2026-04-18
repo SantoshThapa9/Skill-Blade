@@ -33,6 +33,8 @@ const courseSchema = new Schema(
     quiz: {
       questions: { type: [questionSchema], default: [] },
     },
+    createdBy: { type: Schema.Types.ObjectId, ref: "User" },
+    createdByName: { type: String, default: "Admin" },
   },
   { timestamps: true },
 );

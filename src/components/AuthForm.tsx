@@ -4,14 +4,14 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { setAuthUser } from "@/redux/authSlice";
-import styles from "@/styles/App.module.scss";
+import styles from "@/styles/Auth.module.scss";
 
 type Props = {
   mode: "login" | "signup";
 };
 
 type AuthResponse = {
-  user?: { name: string; role: "user" | "admin" };
+  user?: { id: string; name: string; role: "user" | "admin" };
   error?: string;
 };
 
@@ -32,7 +32,7 @@ export function AuthForm({ mode }: Props) {
       name: String(form.get("name") ?? "").trim(),
       email: String(form.get("email") ?? "").trim(),
       role: isAdmin ? "admin" : "user",
-
+      adminPasscode: String(form.get("adminPasscode") ?? ""),
       password: String(form.get("password") ?? ""),
     };
 
@@ -54,41 +54,56 @@ export function AuthForm({ mode }: Props) {
     }
 
     if (data.user) {
-      dispatch(setAuthUser({ name: data.user.name, role: data.user.role }));
+      dispatch(
+        setAuthUser({
+          id: data.user.id,
+          name: data.user.name,
+          role: data.user.role,
+        }),
+      );
       router.push("/courses");
     }
   }
 
   return (
     <form onSubmit={submit} className={styles.form}>
-      {mode === "signup" ? (
-        <label>
-          Name
+      {mode === "signup" && (
+        <label className={styles.field}>
+          <span>Name</span>
           <input name="name" minLength={2} required />
         </label>
-      ) : null}
-      <label>
-        Email
+      )}
+
+      <label className={styles.field}>
+        <span>Email</span>
         <input name="email" type="email" required />
       </label>
-      <label>
-        Password
+
+      <label className={styles.field}>
+        <span>Password</span>
         <input name="password" type="password" minLength={6} required />
       </label>
-      {mode === "signup" ? (
+
+      {mode === "signup" && (
         <>
-          <label className={styles.checkboxLabel}>
-            <span>Sign up as admin</span>
+          <label className={styles.checkbox}>
             <input
               type="checkbox"
               checked={isAdmin}
               onChange={(e) => setIsAdmin(e.target.checked)}
             />
+            <span>Sign up as admin</span>
           </label>
+
           {isAdmin && (
-            <>
-              <label>
-                What type of courses will you create?
+            <div className={styles.adminSection}>
+              <label className={styles.field}>
+                <span>Admin passcode</span>
+                <input name="adminPasscode" type="password" required />
+              </label>
+
+              <label className={styles.field}>
+                <span>Course type</span>
                 <select name="courseType" required>
                   <option value="">Select</option>
                   <option value="programming">Programming</option>
@@ -99,35 +114,33 @@ export function AuthForm({ mode }: Props) {
                 </select>
               </label>
 
-              <label>
-                Your experience level
+              <label className={styles.field}>
+                <span>Experience</span>
                 <select name="experienceLevel" required>
                   <option value="">Select</option>
-                  <option value="beginner">Beginner (0-2 yrs)</option>
-                  <option value="intermediate">Intermediate (2-5 yrs)</option>
-                  <option value="expert">Expert (5+ yrs)</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="expert">Expert</option>
                 </select>
               </label>
 
-              <label>
-                What is your main goal as an admin?
-                <textarea
-                  name="adminGoal"
-                  placeholder="e.g. Teach React, build structured courses, mentor learners"
-                  required
-                />
+              <label className={styles.field}>
+                <span>Admin goal</span>
+                <textarea name="adminGoal" required />
               </label>
 
-              <label>
-                Portfolio / LinkedIn / Website (optional)
-                <input name="portfolio" type="url" placeholder="https://..." />
+              <label className={styles.field}>
+                <span>Portfolio (optional)</span>
+                <input name="portfolio" type="url" />
               </label>
-            </>
+            </div>
           )}
         </>
-      ) : null}
-      {error ? <p className={styles.error}>{error}</p> : null}
-      <button className={styles.primaryButton} disabled={loading}>
+      )}
+
+      {error && <p className={styles.error}>{error}</p>}
+
+      <button className={styles.button} disabled={loading}>
         {loading
           ? "Working..."
           : mode === "signup"

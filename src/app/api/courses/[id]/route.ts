@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
-import { getDemoCourse } from "@/lib/demoCourse";
 import { Course, type CourseDocument } from "@/models/Course";
 import { User } from "@/models/User";
 import { getSession, requireAuth } from "@/lib/auth";
@@ -14,36 +13,20 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Missing course id." }, { status: 400 });
   }
 
-  type CoursePayload = CourseDocument | ReturnType<typeof getDemoCourse>;
-  let course: CoursePayload | null = null;
-  let databaseAvailable = true;
+  let course: CourseDocument | null = null;
 
   try {
     await connectToDatabase();
     course = await Course.findById(courseId).lean();
   } catch {
-    databaseAvailable = false;
-  }
-
-  if (!course) {
-    course = getDemoCourse(courseId);
+    return NextResponse.json(
+      { error: "Unable to load course." },
+      { status: 500 },
+    );
   }
 
   if (!course) {
     return NextResponse.json({ error: "Course not found." }, { status: 404 });
-  }
-
-  const session = getSession(request);
-  let enrolled = false;
-
-  if (session && databaseAvailable) {
-    const user = await User.findById(session.id).lean();
-    enrolled = Boolean(
-      user?.enrolledCourses?.some(
-        (courseRef: { toString(): string }) =>
-          courseRef.toString() === courseId,
-      ),
-    );
   }
 
   const courseIdString = String((course as { _id?: unknown })._id ?? "");
@@ -61,50 +44,69 @@ export async function GET(request: Request) {
     },
   };
 
-  return NextResponse.json({ course: publicCourse, enrolled });
-}
+  const session = getSession(request);
+  let enrolled = false;
+  let progress: { watchedLessons: string[]; quizCompleted: boolean } = { watchedLessons: [], quizCompleted: false };
+  let completed = false;
 
-export async function PUT(request: Request) {
-  await requireAuth(request, "admin");
-  const body = await request.json().catch(() => null);
-  const courseId = String(body?.courseId ?? "").trim();
-  if (!courseId) {
-    return NextResponse.json({ error: "Missing course id." }, { status: 400 });
+  if (session) {
+    const user = await User.findById(session.id).lean();
+    enrolled = Boolean(
+      user?.enrolledCourses?.some(
+        (courseRef: { toString(): string }) =>
+          courseRef.toString() === courseId,
+      ),
+    );
+    if (enrolled) {
+      const userProgress = user?.progress?.find(
+        (p: { courseId: { toString(): string } }) => p.courseId.toString() === courseId
+      );
+      if (userProgress) {
+        progress = {
+          watchedLessons: userProgress.watchedLessons,
+          quizCompleted: userProgress.quizCompleted,
+        };
+      }
+      completed = Boolean(
+        user?.completedCourses?.some(
+          (courseRef: { toString(): string }) =>
+            courseRef.toString() === courseId,
+        ),
+      );
+    }
   }
 
-  await connectToDatabase();
-  const updated = await Course.findByIdAndUpdate(
-    courseId,
-    {
-      title: String(body?.title ?? "").trim(),
-      description: String(body?.description ?? "").trim(),
-      thumbnail: String(body?.thumbnail ?? "").trim(),
-      lessons: Array.isArray(body?.lessons) ? body.lessons : [],
-      quiz: {
-        questions: Array.isArray(body?.quiz?.questions)
-          ? body.quiz.questions
-          : [],
-      },
-    },
-    { new: true },
-  ).lean();
-
-  if (!updated) {
-    return NextResponse.json({ error: "Course not found." }, { status: 404 });
-  }
-
-  return NextResponse.json({ course: updated });
+  return NextResponse.json({ course: publicCourse, enrolled, progress, completed });
 }
 
 export async function DELETE(request: Request) {
-  await requireAuth(request, "admin");
+  const session = await requireAuth(request, "admin");
   const url = new URL(request.url);
   const courseId = url.pathname.split("/").pop();
+
   if (!courseId) {
-    return NextResponse.json({ error: "Missing course id." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Course id is required." },
+      { status: 400 },
+    );
   }
 
   await connectToDatabase();
+  const course = await Course.findById(courseId);
+  if (!course) {
+    return NextResponse.json({ error: "Course not found." }, { status: 404 });
+  }
+
+  if (
+    !course.createdBy?.toString?.() ||
+    course.createdBy.toString() !== session.id
+  ) {
+    return NextResponse.json(
+      { error: "Only the creator can delete this course." },
+      { status: 403 },
+    );
+  }
+
   await Course.findByIdAndDelete(courseId);
   return NextResponse.json({ success: true });
 }

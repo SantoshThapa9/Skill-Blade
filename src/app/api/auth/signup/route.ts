@@ -14,6 +14,7 @@ export async function POST(request: Request) {
     .toLowerCase();
   const password = String(body?.password ?? "");
   const role = String(body?.role ?? "user") as "user" | "admin";
+  const adminPasscode = String(body?.adminPasscode ?? "");
 
   if (!name || !email || password.length < 6) {
     return NextResponse.json(
@@ -29,6 +30,16 @@ export async function POST(request: Request) {
       { error: "Email already exists." },
       { status: 409 },
     );
+  }
+
+  if (role === "admin") {
+    const passcode = process.env.ADMIN_SIGNUP_PASSCODE ?? "";
+    if (!passcode || adminPasscode !== passcode) {
+      return NextResponse.json(
+        { error: "Invalid admin passcode." },
+        { status: 403 },
+      );
+    }
   }
 
   const user = await User.create({

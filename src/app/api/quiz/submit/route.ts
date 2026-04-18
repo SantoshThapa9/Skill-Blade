@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
-import { getDemoCourse } from "@/lib/demoCourse";
-import { Course, type CourseDocument } from "@/models/Course";
+import { Course } from "@/models/Course";
 import { User } from "@/models/User";
 import { requireAuth } from "@/lib/auth";
 
@@ -20,13 +19,8 @@ export async function POST(request: Request) {
     );
   }
 
-  type CoursePayload = CourseDocument | ReturnType<typeof getDemoCourse>;
-
   await connectToDatabase();
-  let course: CoursePayload | null = await Course.findById(courseId).lean();
-  if (!course) {
-    course = getDemoCourse(courseId);
-  }
+  const course = await Course.findById(courseId).lean();
 
   if (!course || !course.quiz?.questions?.length) {
     return NextResponse.json(
@@ -49,5 +43,24 @@ export async function POST(request: Request) {
     $push: { quizScores: { courseId, score } },
   });
 
-  return NextResponse.json({ score, total: questions.length, correct });
+  // Update progress
+  await User.findOneAndUpdate(
+    { _id: user.id, "progress.courseId": courseId },
+    { $set: { "progress.$.quizCompleted": true } },
+    { new: true },
+  ).exec();
+
+  // If score >= 70%, add to completed courses
+  if (score >= 70) {
+    await User.findByIdAndUpdate(user.id, {
+      $addToSet: { completedCourses: courseId },
+    });
+  }
+
+  return NextResponse.json({
+    score,
+    total: questions.length,
+    correct,
+    completed: score >= 70,
+  });
 }

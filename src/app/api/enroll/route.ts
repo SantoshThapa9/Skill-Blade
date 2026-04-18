@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/db";
 import { requireAuth } from "@/lib/auth";
-import { getDemoCourse } from "@/lib/demoCourse";
 import { User } from "@/models/User";
 import { Course } from "@/models/Course";
 
@@ -22,16 +20,11 @@ export async function POST(request: Request) {
 
   await connectToDatabase();
   const course = await Course.findById(courseId);
-  const demoCourse = course ? null : getDemoCourse(courseId);
-  if (!course && !demoCourse) {
+  if (!course) {
     return NextResponse.json({ error: "Course not found." }, { status: 404 });
   }
 
-  const enrolledCourseId = course
-    ? course._id
-    : mongoose.isValidObjectId(courseId)
-      ? new mongoose.Types.ObjectId(courseId)
-      : courseId;
+  const enrolledCourseId = course._id;
 
   await User.findByIdAndUpdate(user.id, {
     $addToSet: { enrolledCourses: enrolledCourseId },

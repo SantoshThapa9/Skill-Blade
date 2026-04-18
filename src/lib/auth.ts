@@ -1,6 +1,5 @@
 import crypto from "crypto";
 import type { Role } from "@/models/User";
-import { User } from "@/models/User";
 
 const TOKEN_NAME = "skillToken";
 const PUBLIC_USER_NAME = "skillUser";
@@ -78,7 +77,7 @@ export function createSessionCookies(user: SessionUser) {
     exp: Math.floor(Date.now() / 1000) + MAX_AGE,
   });
   const publicUser = encodeURIComponent(
-    JSON.stringify({ name: user.name, role: user.role }),
+    JSON.stringify({ id: user.id, name: user.name, role: user.role }),
   );
 
   return [

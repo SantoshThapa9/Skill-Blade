@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { clearAuthUser } from "@/redux/authSlice";
-import styles from "@/styles/App.module.scss";
+import styles from "@/styles/Header.module.scss";
 
 export function Header() {
   const router = useRouter();

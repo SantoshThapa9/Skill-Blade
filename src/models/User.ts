@@ -16,6 +16,15 @@ const quizScoreSchema = new Schema(
   { _id: false },
 );
 
+const progressSchema = new Schema(
+  {
+    courseId: { type: Schema.Types.ObjectId, ref: "Course", required: true },
+    watchedLessons: [{ type: String }],
+    quizCompleted: { type: Boolean, default: false },
+  },
+  { _id: false },
+);
+
 const userSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
@@ -23,7 +32,9 @@ const userSchema = new Schema(
     password: { type: String, required: true, select: false },
     role: { type: String, enum: ["user", "admin"], default: "user" },
     enrolledCourses: [{ type: Schema.Types.ObjectId, ref: "Course" }],
+    completedCourses: [{ type: Schema.Types.ObjectId, ref: "Course" }],
     quizScores: { type: [quizScoreSchema], default: [] },
+    progress: { type: [progressSchema], default: [] },
   },
   { timestamps: true },
 );

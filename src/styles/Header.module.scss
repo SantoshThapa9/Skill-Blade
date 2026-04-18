@@ -1,0 +1,92 @@
+.header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(12px, 3vw, 24px);
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: clamp(14px, 2vw, 18px) clamp(18px, 4vw, 56px);
+  background: rgba(8, 18, 31, 0.92);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 800;
+  color: var(--text);
+}
+
+.brand span {
+  color: var(--primary);
+}
+
+.nav,
+.heroActions,
+.cardActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(8px, 1vw, 12px);
+}
+
+.nav {
+  justify-content: flex-end;
+}
+
+.nav a,
+.nav button,
+.nav span {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.greeting {
+  color: var(--primary);
+  font-weight: 600;
+  cursor: default;
+}
+
+.btn,
+.navCta,
+.primaryButton,
+.cardActions a,
+.cardActions button,
+.quizPanel button,
+.list button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0 clamp(12px, 2vw, 16px);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton,
+.navCta {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+
+@media (max-width: 768px) {
+  .header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(12px, 2vw, 16px);
+  }
+  .nav {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
