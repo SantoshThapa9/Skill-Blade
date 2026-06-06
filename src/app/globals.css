@@ -1,12 +1,12 @@
 :root {
-  --bg: #08101f;
-  --surface: #0d1a34;
-  --surface-soft: #132448;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --primary: #3b82f6;
-  --primary-soft: rgba(59, 130, 246, 0.16);
-  --border: rgba(148, 163, 184, 0.24);
+  --bg: #0B1120;
+  --surface:#111827;
+  --surface-soft:   #e4e2ed;
+  --text: #ffffff;
+  --muted: #b6c1d1;
+  --primary: #1a65df;
+  --primary-soft: rgba(52, 76, 117, 0.16);
+  --border: rgba(177, 205, 243, 0.24);
   --danger: #f87171;
   --danger-soft: rgba(248, 113, 113, 0.12);
   --white: #ffffff;
