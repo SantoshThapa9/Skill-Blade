@@ -277,6 +277,7 @@ export default function AdminPage() {
               {formState.quiz.map((question, qi) => (
                 <div key={qi} className={styles.quizRow}>
                   <input
+                    className={styles.question}
                     required
                     placeholder={`Question ${qi + 1}`}
                     value={question.prompt}
@@ -363,7 +364,7 @@ export default function AdminPage() {
                       </>
                     ) : (
                       <span className={styles.locked}>
-                        Only the creator can edit or delete
+                        Only the creator can make changes
                       </span>
                     )}
                   </div>

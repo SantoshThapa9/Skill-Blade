@@ -32,7 +32,7 @@ function signToken(payload: object) {
   return `${header}.${body}.${signature}`;
 }
 
-function verifyToken(token: string) {
+export function verifyToken(token: string) {
   const parts = token.split(".");
   if (parts.length !== 3) return null;
   const [header, body, signature] = parts;

@@ -1,15 +1,16 @@
 :root {
-  --bg: #08101f;
-  --surface: #0d1a34;
-  --surface-soft: #132448;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --primary: #3b82f6;
+  --bg: rgb(17, 17, 36);
+  --surface: rgb(13, 26, 52);
+  --surface-soft: rgb(19, 36, 72);
+  --text: rgb(226, 232, 240);
+  --muted: rgb(148, 163, 184);
+  --primary: rgb(59, 130, 246);
   --primary-soft: rgba(59, 130, 246, 0.16);
   --border: rgba(148, 163, 184, 0.24);
   --danger: #f87171;
   --danger-soft: rgba(248, 113, 113, 0.12);
   --white: #ffffff;
+  --button-bg: rgb(30, 27, 46);
 }
 
 html {

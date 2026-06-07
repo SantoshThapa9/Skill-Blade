@@ -20,18 +20,42 @@ export default function CoursesPage() {
   const user = useAppSelector((state) => state.auth.user);
   const [courses, setCourses] = useState<Course[]>([]);
   const [message, setMessage] = useState("");
+  const [completedCourses, setCompletedCourses] = useState<Set<string>>(
+    new Set(),
+  );
 
   useEffect(() => {
-    fetch("/api/courses")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data?.courses)) {
-          setCourses(data.courses);
+    setMessage("Loading courses...");
+
+    const loadCourses = async () => {
+      try {
+        const res = await fetch("/api/courses");
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch courses");
         }
-      })
-      .catch(() => {
+
+        const data = await res.json();
+        const coursesList = Array.isArray(data?.courses) ? data.courses : [];
+
+        setCourses(coursesList);
+
+        const completedSet = new Set<string>();
+        for (const course of coursesList) {
+          const courseRes = await fetch(`/api/courses/${course._id}`);
+          const courseData = await courseRes.json();
+          if (courseData?.completed) {
+            completedSet.add(course._id);
+          }
+        }
+        setCompletedCourses(completedSet);
+        setMessage("");
+      } catch {
         setMessage("Unable to load courses.");
-      });
+      }
+    };
+
+    loadCourses();
   }, []);
 
   async function enroll(courseId: string) {
@@ -62,12 +86,22 @@ export default function CoursesPage() {
               <p>{c.description}</p>
               <p>{c.lessons.length} lessons</p>
 
-              <button
-                className={styles.primaryButton}
-                onClick={() => enroll(c._id)}
-              >
-                {user ? "Enroll" : "Login"}
-              </button>
+              {completedCourses.has(c._id) ? (
+                <button
+                  className={styles.primaryButton}
+                  disabled
+                  style={{ opacity: 0.6, cursor: "not-allowed" }}
+                >
+                  This course is already completed
+                </button>
+              ) : (
+                <button
+                  className={styles.primaryButton}
+                  onClick={() => enroll(c._id)}
+                >
+                  {user ? "Enroll" : "Login"}
+                </button>
+              )}
 
               <Link href={`/courses/${c._id}`} className={styles.muted}>
                 View
