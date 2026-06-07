@@ -32,7 +32,15 @@
     font-size: inherit;
   }
 }
+.brand {
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 800;
+  color: var(--text);
+}
 
+.brand span {
+  color: var(--primary);
+}
 .menuButton {
   display: none;
 
