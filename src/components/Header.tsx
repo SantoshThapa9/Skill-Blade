@@ -33,6 +33,7 @@ export function Header() {
         <Menu />
       </button>
       <nav className={`${styles.nav} ${menuOpen ? styles.navOpen : ""}`}>
+        <Link href="/">Home</Link>
         <Link href="/courses">Courses</Link>
         <Link href="/about">About</Link>
         {user ? (
