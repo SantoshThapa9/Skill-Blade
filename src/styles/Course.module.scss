@@ -42,6 +42,7 @@
     padding: 0.6rem 1rem;
     border-radius: 6px;
     cursor: pointer;
+    margin: 10px;
   }
 
   .primaryButton:hover {
@@ -140,5 +141,155 @@
 
   .description {
     color: var(--muted);
+  }
+}
+.certificate {
+  max-width: 900px;
+  margin: 0 auto;
+
+  padding: clamp(2rem, 5vw, 4rem);
+
+  text-align: center;
+
+  color: var(--text);
+
+  background: linear-gradient(135deg, var(--surface), var(--surface-soft));
+
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+
+  font-family: Georgia, serif;
+}
+
+.certificateHeader {
+  padding: 2rem 0;
+  margin-bottom: 2.5rem;
+
+  border-top: 3px solid var(--primary);
+  border-bottom: 3px solid var(--primary);
+}
+
+.brand {
+  display: block;
+
+  margin-bottom: 1rem;
+
+  color: var(--primary);
+
+  font-size: 1.25rem;
+  font-weight: 700;
+
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+}
+
+.certificateTitle {
+  margin: 0;
+
+  color: var(--white);
+
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  font-weight: 300;
+
+  letter-spacing: 0.15rem;
+}
+
+.certificateSubtitle {
+  margin-bottom: 1.5rem;
+
+  color: var(--muted);
+
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.certificateName {
+  margin-bottom: 2rem;
+
+  color: var(--white);
+
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+
+  text-underline-offset: 0.4rem;
+
+  font-style: italic;
+}
+
+.certificateText {
+  margin-bottom: 1rem;
+
+  color: var(--text);
+}
+
+.courseName {
+  margin-bottom: 2.5rem;
+
+  color: var(--white);
+
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+
+  text-underline-offset: 0.3rem;
+}
+
+.certificateMeta {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+
+  padding-top: 2rem;
+  margin-bottom: 2rem;
+
+  border-top: 1px solid var(--border);
+}
+
+.metaLabel {
+  margin-bottom: 0.5rem;
+
+  color: var(--muted);
+
+  font-size: 0.875rem;
+}
+
+.metaValue {
+  color: var(--white);
+
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.certificateFooter {
+  max-width: 600px;
+  margin: 0 auto;
+
+  color: var(--muted);
+
+  line-height: 1.7;
+}
+
+.certificateActions {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .certificateMeta {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .certificate {
+    padding: 2rem 1.25rem;
   }
 }

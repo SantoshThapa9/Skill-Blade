@@ -38,10 +38,17 @@ export async function POST(request: Request) {
   );
   const score = Math.round((correct / questions.length) * 100);
 
-  await User.findByIdAndUpdate(user.id, {
-    $pull: { quizScores: { courseId } },
-    $push: { quizScores: { courseId, score } },
-  });
+  const userDoc = await User.findById(user.id);
+  if (!userDoc) {
+    return NextResponse.json({ error: "User not found." }, { status: 404 });
+  }
+
+  const updatedScores = userDoc.quizScores
+    .filter((entry) => String(entry.courseId) !== courseId)
+    .map((entry) => ({ courseId: entry.courseId, score: entry.score }));
+
+  userDoc.set("quizScores", [...updatedScores, { courseId, score }]);
+  await userDoc.save();
 
   // Update progress
   await User.findOneAndUpdate(

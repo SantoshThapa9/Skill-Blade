@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 
@@ -50,12 +51,14 @@ export default function CourseDetailPage({
 
 function CourseDetail({ courseId }: { courseId: string }) {
   const user = useAppSelector((state) => state.auth.user);
+  const router = useRouter();
 
   const [course, setCourse] = useState<Course | null>(null);
   const [enrolled, setEnrolled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
+  const [submitting, setSubmitting] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const [progress, setProgress] = useState<Progress>({
     watchedLessons: [],
@@ -96,6 +99,17 @@ function CourseDetail({ courseId }: { courseId: string }) {
       cancelled = true;
     };
   }, [courseId]);
+
+  useEffect(() => {
+    if (course?.quiz?.questions?.length) {
+      setAnswers(Array(course.quiz.questions.length).fill(-1));
+    }
+  }, [course?.quiz?.questions?.length]);
+
+  const allAnswersSelected = course?.quiz?.questions?.length
+    ? answers.length === course.quiz.questions.length &&
+      answers.every((answer) => answer >= 0)
+    : false;
 
   async function enroll() {
     if (!user) {
@@ -141,25 +155,43 @@ function CourseDetail({ courseId }: { courseId: string }) {
   }
 
   async function submitQuiz() {
-    const res = await fetch("/api/quiz/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseId, answers }),
-    });
+    if (!allAnswersSelected) {
+      setMessage("Please answer all questions before submitting.");
+      alert("Please answer all quiz questions before submitting.");
+      return;
+    }
 
-    const data = await res.json();
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/quiz/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseId, answers }),
+      });
 
-    if (res.ok) {
-      setScore(data.score);
-      setProgress((prev) => ({ ...prev, quizCompleted: true }));
-      if (data.completed) {
-        setCompleted(true);
-        setMessage(`Course completed! Score: ${data.score}%`);
+      const data = await res.json();
+
+      if (res.ok) {
+        setScore(data.score);
+        setProgress((prev) => ({ ...prev, quizCompleted: true }));
+
+        if (data.completed) {
+          setCompleted(true);
+          router.push(
+            `/certificate?course=${encodeURIComponent(course?.title ?? "course")}&score=${data.score}&completed=${data.completed}`,
+          );
+        } else {
+          setMessage(
+            `Score: ${data.score}% - Need 70% to complete the course.`,
+          );
+        }
       } else {
-        setMessage(`Score: ${data.score}% - Need 70% to complete the course.`);
+        setMessage(data.error || "Quiz failed.");
       }
-    } else {
-      setMessage(data.error || "Quiz failed.");
+    } catch {
+      setMessage("Quiz submission failed. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -186,12 +218,31 @@ function CourseDetail({ courseId }: { courseId: string }) {
         {completed && <p className={styles.notice}>✅ Completed</p>}
         <p className={styles.description}>{course.description}</p>
 
-        {!enrolled ? (
+        {completed ? (
+          <div>
+            <button
+              className={styles.primaryButton}
+              disabled
+              style={{ opacity: 0.6, cursor: "not-allowed" }}
+            >
+              This course is already completed
+            </button>
+          </div>
+        ) : !enrolled ? (
           <button className={styles.primaryButton} onClick={enroll}>
             {user ? "Enroll" : "Login to enroll"}
           </button>
         ) : (
           <p className={styles.notice}>Enrolled</p>
+        )}
+
+        {completed && (
+          <button
+            className={styles.primaryButton}
+            onClick={() => router.push(`/certificate/${courseId}`)}
+          >
+            View Certificate
+          </button>
         )}
 
         {message && <p className={styles.notice}>{message}</p>}
@@ -278,9 +329,17 @@ function CourseDetail({ courseId }: { courseId: string }) {
               <button
                 className={styles.primaryButton}
                 onClick={submitQuiz}
-                disabled={answers.length !== course.quiz.questions.length}
+                disabled={submitting}
               >
-                Submit Quiz
+                {submitting ? "Submitting..." : "Submit Quiz"}
+              </button>
+
+              <button
+                className={styles.primaryButton}
+                onClick={() => router.push(`/certificate/${courseId}`)}
+                disabled={!completed && score === null}
+              >
+                View Certificate
               </button>
 
               {score !== null && (

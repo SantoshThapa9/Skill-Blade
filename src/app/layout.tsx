@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import "./globals.css";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import dynamic from "next/dynamic";
+
+const Chatbot = dynamic(() => import("@/components/Chatbot"));
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +33,8 @@ export default function RootLayout({
       <body>
         <Providers>
           <Header />
-          {children}
+          {children} <Chatbot />
+          <Footer />
         </Providers>
       </body>
     </html>
