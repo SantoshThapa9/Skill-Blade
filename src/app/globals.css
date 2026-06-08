@@ -2,15 +2,15 @@
   --bg: #08101f;
   --surface: #0d1a34;
   --surface-soft: #132448;
-  --text: #e2e8f0;
+  --text: #ebeef3;
   --muted: #94a3b8;
-  --primary: #3b82f6;
+  --primary: #0e60e4;
   --primary-soft: rgba(59, 130, 246, 0.16);
-  --border: rgba(148, 163, 184, 0.24);
+  --border: rgba(195, 202, 211, 0.24);
   --danger: #f87171;
   --danger-soft: rgba(248, 113, 113, 0.12);
   --white: #ffffff;
-  --button-bg: rgb(30, 27, 46);
+  --button-bg: rgb(24, 31, 63);
 }
 
 html {
