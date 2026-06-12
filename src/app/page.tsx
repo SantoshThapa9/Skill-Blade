@@ -1,4 +1,4 @@
- import Link from "next/link";
+import Link from "next/link";
 import styles from "@/styles/App.module.scss";
 
 export default function Home() {
@@ -12,9 +12,8 @@ export default function Home() {
           <h1>Sharper courses for sharper careers.</h1>
 
           <p>
-            Skill Blade helps you learn in-demand skills, enroll in
-            expert-led courses, and earn certifications to advance your
-            career.
+            Skill Blade helps you learn in-demand skills, enroll in expert-led
+            courses, and earn certifications to advance your career.
           </p>
 
           <div className={styles.heroActions}>
@@ -35,8 +34,8 @@ export default function Home() {
         </div>
 
         <p className={styles.sectionText}>
-          Whether you're starting your first career, switching industries,
-          or upgrading your expertise, Skill Blade provides modern,
+          Whether you're starting your first career, switching industries, or
+          upgrading your expertise, Skill Blade provides modern,
           industry-focused learning paths designed by professionals.
         </p>
       </section>
@@ -74,31 +73,25 @@ export default function Home() {
         <div className={styles.featureGrid}>
           <article className={styles.featureCard}>
             <h3>Expert Instructors</h3>
-            <p>
-              Learn directly from experienced professionals and mentors.
-            </p>
+            <p>Learn directly from experienced professionals and mentors.</p>
           </article>
 
           <article className={styles.featureCard}>
             <h3>Hands-On Projects</h3>
             <p>
-              Apply your knowledge through practical assignments and
-              real-world projects.
+              Apply your knowledge through practical assignments and real-world
+              projects.
             </p>
           </article>
 
           <article className={styles.featureCard}>
             <h3>Flexible Learning</h3>
-            <p>
-              Study anytime, anywhere with self-paced course access.
-            </p>
+            <p>Study anytime, anywhere with self-paced course access.</p>
           </article>
 
           <article className={styles.featureCard}>
             <h3>Certificates</h3>
-            <p>
-              Earn certificates that showcase your skills and achievements.
-            </p>
+            <p>Earn certificates that showcase your skills and achievements.</p>
           </article>
         </div>
       </section>
@@ -146,8 +139,8 @@ export default function Home() {
 
           <article className={styles.testimonialCard}>
             <p>
-              "The certification gave my resume a significant boost during
-              job applications."
+              "The certification gave my resume a significant boost during job
+              applications."
             </p>
             <strong>— Arjun Patel</strong>
           </article>
@@ -159,8 +152,8 @@ export default function Home() {
         <h2>Ready to unlock your potential?</h2>
 
         <p>
-          Join thousands of learners building the skills needed for
-          tomorrow's opportunities.
+          Join thousands of learners building the skills needed for tomorrow's
+          opportunities.
         </p>
 
         <Link className={styles.primaryButton} href="/signup">

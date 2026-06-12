@@ -37,9 +37,13 @@ export async function POST(req) {
     if (!question?.trim()) {
       return Response.json({ error: "Question required" }, { status: 400 });
     }
+    if (question.length > 100) {
+      return Response.json({ error: "Question too long" }, { status: 400 });
+    }
 
     const completion = await client.chat.completions.create({
-      model: "gpt-4.1-mini",
+      model: "gpt-4.1-nano",
+      max_tokens: 100,
       messages: [
         {
           role: "system",
@@ -50,8 +54,6 @@ export async function POST(req) {
           content: question,
         },
       ],
-      temperature: 0.7,
-      max_tokens: 200,
     });
 
     return Response.json({

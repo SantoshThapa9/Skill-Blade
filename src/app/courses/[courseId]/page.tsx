@@ -334,13 +334,15 @@ function CourseDetail({ courseId }: { courseId: string }) {
                 {submitting ? "Submitting..." : "Submit Quiz"}
               </button>
 
-              <button
-                className={styles.primaryButton}
-                onClick={() => router.push(`/certificate/${courseId}`)}
-                disabled={!completed && score === null}
-              >
-                View Certificate
-              </button>
+              {completed && (
+                <button
+                  className={styles.primaryButton}
+                  onClick={() => router.push(`/certificate/${courseId}`)}
+                  disabled={!completed && score === null}
+                >
+                  View Certificate
+                </button>
+              )}
 
               {score !== null && (
                 <p className={styles.notice}>Latest Score: {score}%</p>

@@ -32,5 +32,10 @@ export async function connectToDatabase() {
   });
 
   cache.conn = await cache.promise;
+  
+  // Ensure all models are registered to resolve circular dependencies
+  await import("@/models/Course");
+  await import("@/models/User");
+  
   return cache.conn;
 }

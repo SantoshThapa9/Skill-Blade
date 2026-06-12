@@ -2,9 +2,9 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { connectToDatabase } from "@/lib/db";
 import { verifyToken } from "@/lib/auth";
+import { Course } from "@/models/Course";
 import { User } from "@/models/User";
 import styles from "@/styles/Course.module.scss";
-
 export default async function CertificatePage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("skillToken")?.value;
